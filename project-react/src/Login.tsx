@@ -16,7 +16,7 @@ const Login = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/dashboard'); // ✅ go to Dashboard on success
+      navigate('/dashboard'); 
     } catch (err: any) {
       setError('User not registered or password is incorrect.');
     }
