@@ -1,32 +1,24 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { auth } from './firebase'; // Import Firebase functions
-import { signInWithEmailAndPassword as firebaseSignIn } from 'firebase/auth';
+import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const auth = getAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Reset previous error and success messages
     setError('');
-    setSuccessMessage('');
 
     try {
-      // Firebase authentication: Sign in the user
-      const userCredential = await firebaseSignIn(auth, email, password);
-
-      // If successful, navigate to the success page
-      setSuccessMessage('You have successfully logged in');
-      navigate('/Dashbaord');
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate('/dashboard'); // ✅ go to Dashboard on success
     } catch (err: any) {
-      // Handle error if login fails (user not registered, incorrect credentials)
-      setError('Invalid email or password. Please check your credentials.');
+      setError('User not registered or password is incorrect.');
     }
   };
 
@@ -47,11 +39,8 @@ const Login = () => {
         textAlign: 'center'
       }}>
         <h2 style={{ marginBottom: '2rem', fontSize: '24px', fontWeight: '600' }}>Login</h2>
-
         {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>}
-        {successMessage && <p style={{ color: 'green', fontSize: '14px' }}>{successMessage}</p>}
-
-        <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <input
             type="email"
             placeholder="Email"
@@ -92,13 +81,12 @@ const Login = () => {
               border: 'none',
               borderRadius: '6px',
               cursor: 'pointer',
-              margin: '0 auto', // centers the button inside the form
+              margin: '0 auto',
             }}
           >
             Login
           </button>
         </form>
-
         <p style={{ marginTop: '1.5rem', fontSize: '15px' }}>
           Don't have an account? <Link to="/register">Register</Link>
         </p>
