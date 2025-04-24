@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { auth, db } from './firebase'; // Adjust path if needed
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -8,26 +11,33 @@ const Register = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Reset any previous errors
     setError('');
 
-    // Check if any field is empty
     if (!name || !email || !password) {
       setError('Please fill in all fields');
       return;
     }
 
-    // Simulate saving user data to localStorage
-    const newUser = { name, email, password };
+    try {
+      // Register with Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-    // Store the user data in localStorage (you can use sessionStorage too)
-    localStorage.setItem('user', JSON.stringify(newUser));
+      // Save user info to Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        name,
+        email,
+        createdAt: new Date()
+      });
 
-    // After "registering" the user, navigate to the login page
-    navigate('/login');
+      // Redirect to login
+      navigate('/login');
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -103,7 +113,7 @@ const Register = () => {
               border: 'none',
               borderRadius: '6px',
               cursor: 'pointer',
-              margin: '0 auto', // centers the button inside the form
+              margin: '0 auto',
             }}
           >
             Register
