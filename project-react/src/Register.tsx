@@ -115,25 +115,26 @@ const Register = () => {
             onBlur={(e) => e.target.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)'}
           />
           <button
-            type="submit"
-            style={{
-              width: '100%',
-              height: '45px',
-              backgroundColor: '#3478f6',
-              color: 'white',
-              fontSize: '16px',
-              fontWeight: '500',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              transition: 'background-color 0.3s ease, transform 0.2s',
-            }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2980b9'} // Darken on hover
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3478f6'} // Reset background color
-            onClick={(e) => e.currentTarget.style.transform = 'scale(1.05)'} // Button press effect
-          >
-            Register
-          </button>
+          type="submit"
+          style={{
+            width: '100%',
+            height: '45px',
+            backgroundColor: '#3478f6', // Initial color
+            color: 'white',
+            fontSize: '16px',
+            fontWeight: '500',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s ease, transform 0.2s',
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#a29bfe'} // Light purple on hover
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3478f6'} // Reset to original color on mouse out
+          onClick={(e) => e.currentTarget.style.transform = 'scale(1.05)'} // Button press effect
+        >
+          Register
+        </button>
+
         </form>
         <p style={{
           marginTop: '1.5rem',
