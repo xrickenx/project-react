@@ -116,7 +116,7 @@ const Login = () => {
           onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3478f6'} // Reset to original color on mouse out
           onClick={(e) => e.currentTarget.style.transform = 'scale(1.05)'} // Button press effect
         >
-          Register
+          Login
         </button>
 
         </form>
